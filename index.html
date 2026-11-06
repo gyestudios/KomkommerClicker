@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Komkommer Clicker 4.9.3 — Security Update</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="desktop.css">
+<link rel="stylesheet" href="crossing.css">
+  <script src="desktop_boot.js"></script>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <div class="eyebrow">KOMKOMMER CLICKER</div>
+      <h1><button id="versionCucumber" class="version-cucumber" aria-label="Komkommer naast versienummer">🥒</button><button id="globalUpdateTitle" class="global-update-title" aria-label="4.9.3 Security Update">4.9.3 <span>SECURITY UPDATE</span></button></h1>
+    </div>
+    <div class="kc-header-actions">
+      <span class="header-badge kc-preview-badge">4.9.3 SECURITY UPDATE</span>
+      <div class="header-badge online-badge" id="onlineHeaderBadge" title="Online status">🌍 OFFLINE</div>
+      <button type="button" class="kc-fullscreen-launch" id="kcOpenDesktop" title="Open KC in een breed tabblad">⛶ <span>Fullscreen</span></button>
+      <button type="button" class="kc-fullscreen-native" id="kcNativeFullscreen" title="Echt fullscreen in-/uitschakelen">⛶ Scherm vullen</button>
+    </div>
+  </header>
+
+  <nav class="top-nav" aria-label="Hoofdnavigatie">
+    <button class="nav-tab active" data-tab="clicker">Clicker</button>
+    <button class="nav-tab" data-tab="upgrades">Upgrades</button>
+    <button class="nav-tab" data-tab="skins">Skins</button>
+    <button class="nav-tab" data-tab="milestones">Mijlpalen</button>
+    <button class="nav-tab" data-tab="leaderboard">Leaderboard</button>
+    <button class="nav-tab kc-crossing-nav hidden" data-tab="crossing">🏁 Crossing</button>
+    <button class="nav-tab" data-tab="codes">Codes</button>
+    <button class="nav-tab" data-tab="news">📰 Nieuws</button>
+    <button class="nav-tab" data-tab="account">Account</button>
+    <button id="adminNav" class="nav-tab hidden" data-tab="admin">Admin</button>
+    <button id="autumnNav" class="nav-tab autumn-event-nav" data-tab="autumn" type="button" aria-label="Autumn Event">🍂 Autumn</button>
+    <button id="spaceLeakNav" class="nav-tab space-leak-nav hidden" data-tab="space" type="button" aria-label="Space Event Global Foundation">🚀 Space Event</button>
+  </nav>
+
+  <main class="tab-stage">
+    <section id="panel-clicker" class="tab-panel active" data-panel="clicker">
+      <div class="kc-clicker-info">
+      <section class="stats">
+        <div><span>Komkommers</span><b id="score">0</b></div>
+        <div><span>Per klik</span><b id="perClick">1</b></div>
+        <div><span>Per seconde</span><b id="perSec">0</b></div>
+      </section>
+
+      <section class="click-meter card" aria-label="Clickermeter">
+        <div class="click-meter-top">
+          <div><span>⚡ Kliksnelheid</span><b id="liveCps">0 CPS</b></div>
+          <div class="click-meter-record"><span>🏆 Record</span><b id="bestCps">0 CPS</b></div>
+        </div>
+        <div class="click-meter-bar" aria-hidden="true"><i id="cpsBar"></i></div>
+        <div class="click-meter-total"><span>🖱️ Totaal clicks</span><b id="totalClicks">0</b></div>
+      </section>
+
+      <section class="goal-card">
+        <div class="goal-row"><span>Volgende doel</span><b id="goalTitle">Gouden Komkommer</b></div>
+        <div class="bar"><i id="goalBar"></i></div>
+        <small id="goalText">0 / 750 🥒</small>
+      </section>
+      </div>
+
+      <section class="clicker card">
+        <div id="fxLayer" aria-hidden="true"></div>
+        <button id="cucumber" aria-label="Klik op de komkommer">
+          <span id="normalSkin">🥒</span>
+          <img id="skinImage" alt="Geselecteerde komkommerskin">
+        </button>
+        <button id="sharkSpecial" class="shark-special hidden" title="Pak de speciale komkommer!">🥒</button>
+        <div id="cannedCucumber" class="canned-cucumber hidden" aria-hidden="true">🥒</div>
+        <div id="message">CHOP CHOP 🥒</div>
+        <div id="boost" class="boost hidden"></div>
+      </section>
+    </section>
+
+    <section id="panel-upgrades" class="tab-panel" data-panel="upgrades">
+      <section class="card page-card">
+        <div class="page-heading"><div><div class="eyebrow">GROEI</div><h2>⬆️ Upgrades</h2></div><small>Meer power. Meer komkommer.</small></div>
+        <div id="upgrades" class="list"></div>
+      </section>
+    </section>
+
+    <section id="panel-skins" class="tab-panel" data-panel="skins">
+      <section class="card page-card skins-page">
+        <div class="page-heading"><div><div class="eyebrow">COLLECTIE</div><h2>🎨 Skins</h2></div><small>Koop, unlock en equip.</small></div>
+        <div id="skins" class="skins"></div>
+      </section>
+      <section class="card kc-effects-card"><div class="page-heading"><div><div class="eyebrow">COSMETICS</div><h2>✨ EFFECTS</h2></div><small>Je verdiende effecten</small></div><div id="kcEffectsGrid" class="kc-effects-grid"></div></section>
+    </section>
+
+    <section id="panel-milestones" class="tab-panel" data-panel="milestones">
+      <section id="puzzleCard" class="card puzzle-card hidden">
+        <div class="section-title"><h2>🧩 Kettingzaagpuzzel</h2><small id="puzzleCount">0 / 9</small></div>
+        <div class="bar puzzle-bar"><i id="puzzleBar"></i></div>
+        <div id="puzzleStatus" class="puzzle-status"></div>
+        <div id="puzzleCodeArea" class="puzzle-code-area hidden">
+          <div class="puzzle-code-title">🔐 Voer de 8-vakjescode in</div>
+          <div id="puzzleCodeSlots" class="puzzle-code-slots" aria-label="Kettingzaagcode">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 1">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 2">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 3">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 4">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 5">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 6">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 7">
+            <input maxlength="1" inputmode="text" autocomplete="off" aria-label="Code vakje 8">
+          </div>
+          <button id="unlockChainsaw" class="chainsaw-unlock">Ontgrendel 🪚</button>
+          <div id="puzzleCodeMsg" class="status"></div>
+        </div>
+      </section>
+
+      <section class="card page-card">
+        <div class="page-heading"><div><div class="eyebrow">VOORTGANG</div><h2>🏆 Mijlpalen</h2></div><small>Quests & beloningen.</small></div>
+        <div id="milestones" class="list"></div>
+        <button id="milestoneSecretCucumber" class="milestone-secret-cucumber" aria-label="Komkommer">🥒</button>
+      </section>
+    </section>
+
+
+    <section id="panel-autumn" class="tab-panel autumn-panel" data-panel="autumn">
+      <section class="card autumn-hero">
+        <div class="autumn-title-row">
+          <img src="assets/autumn/autumn_icon.png" alt="">
+          <div><div class="eyebrow">LIMITED EVENT</div><h2>🍂 Autumn Event</h2><small id="autumnDaysLeft">... days left</small></div>
+        </div>
+        <div class="autumn-wallet">
+          <div><span>🌰 Acorns</span><b id="autumnAcorns">0</b></div>
+          <div><span>✉️ Autumn Mail</span><b id="autumnMails">0</b></div>
+        </div>
+        <div id="rushBanner" class="rush-banner"><b id="rushTitle">🌰 Next Acorn Rush</b><span id="rushTimer">00:00</span></div>
+        <div id="autumnClickerWrap" class="autumn-clicker-wrap">
+          <button id="autumnClicker" class="autumn-clicker" type="button" disabled aria-label="Autumn Clicker">
+            <span class="autumn-clicker-icon" aria-hidden="true">🌰</span>
+            <span class="autumn-clicker-copy"><b id="autumnClickerTitle">AUTUMN CLICKER</b><small id="autumnClickerReward">Wacht op de volgende Acorn Rush</small></span>
+          </button>
+        </div>
+        <p class="autumn-help">Tijdens Acorn Rush verdien je Acorns alleen met de <b>Autumn Clicker</b> hierboven. De gewone Komkommer Clicker blijft alleen 🥒 geven.</p>
+      </section>
+
+      <section class="card autumn-upgrades-card">
+        <div class="page-heading"><div><div class="eyebrow">EVENT POWER</div><h2>🌰 Autumn Upgrades</h2></div><small>Meer Acorns. Meer grind.</small></div>
+        <div id="autumnUpgrades" class="list"></div>
+      </section>
+
+      <section class="card autumn-quests-card">
+        <div class="autumn-quest-title"><img src="assets/autumn/autumn_quests.png" alt=""><div><div class="eyebrow">WEEKLY</div><h2>📋 Autumn Quests</h2></div></div>
+        <div id="autumnQuests" class="autumn-quests"></div>
+        <button id="claimAutumnMail" class="autumn-mail-btn" disabled><img src="assets/autumn/autumn_mail.png" alt=""> Claim Autumn Mail</button>
+      </section>
+
+      <section class="card autumn-skins-card">
+        <div class="page-heading"><div><div class="eyebrow">LIMITED COLLECTION</div><h2>🍁 Autumn Skins</h2></div><small>9 normale + 1 secret</small></div>
+        <div id="autumnSkins" class="autumn-skins"></div>
+        <div class="autumn-mail-note">✉️ Een gekochte eventskin is pas permanent wanneer je er een <b>Autumn Mail</b> voor gebruikt. Permanente skins blijven ook na het event in je gewone collectie.</div>
+      </section>
+
+      <section id="autumnSecretCodeBox" class="card autumn-secret-code hidden">
+        <div class="eyebrow">???</div><h2>🌰 Acorn value</h2>
+        <p>Dit verandert je echte Acorns niet.</p>
+        <div class="code-row"><input id="autumnFakeAcorns" inputmode="numeric" maxlength="12" placeholder="0"><button id="submitAutumnFakeAcorns">Zet</button></div>
+      </section>
+    </section>
+
+    <section id="panel-space" class="tab-panel space-leak-panel" data-panel="space">
+      <section class="card space-stage-card">
+        <div class="space-leak-kicker">🚀 4.9.0 SPACE EVENT • WERELDWIJDE MISSIE</div>
+        <div class="space-stage-heading">
+          <div>
+            <div class="eyebrow">GLOBAL SPACE EVENT • CURRENT PHASE</div>
+            <h2 id="spaceStageTitle">🌍 Earth → 🌕 Moon</h2>
+            <small>Werk samen met de community en ontgrendel nieuwe planeten en rewards.</small>
+          </div>
+          <div id="spacePhasePill" class="space-phase-pill">EARTH</div>
+        </div>
+
+        <div class="space-community-label">
+          <span>COMMUNITY <span id="spaceUnit">FUEL</span></span>
+          <b><span id="spaceGlobalFuel">—</span> / <span id="spaceTarget">40.000</span></b>
+        </div>
+
+        <div class="space-progress-shell">
+          <div class="space-milestones" aria-label="Fuel milestones">
+            <div class="space-milestone" data-threshold="40000"><b>40K</b><span>🚀</span><small>MOON</small></div>
+          </div>
+
+          <div class="space-tower-wrap" aria-label="Community fuel progress">
+            <div class="space-tower-cap">🌍</div>
+            <div class="space-tower">
+              <div class="space-tower-grid"></div>
+              <div id="spaceFuelBar" class="space-fuel-liquid"><i></i><i></i><i></i></div>
+              <span class="space-tower-mark m75"></span>
+              <span class="space-tower-mark m50"></span>
+              <span class="space-tower-mark m25"></span>
+            </div>
+            <div class="space-tower-base">🚀</div>
+          </div>
+
+          <div class="space-route-vertical" aria-label="Space Event route">
+            <div class="space-route-node boss" data-stage="boss"><span>💀</span><div><b>PSR J2322-2650b</b><small>FINAL BOSS</small></div><em>🔒</em></div>
+            <div class="space-route-node" data-stage="sun"><span>☀️</span><div><b>Zon</b><small>LOCKED</small></div><em>🔒</em></div>
+            <div class="space-route-node" data-stage="pluto"><span>🧊</span><div><b>Pluto</b><small>LOCKED</small></div><em>🔒</em></div>
+            <div class="space-route-node" data-stage="saturn"><span>🪐</span><div><b>Saturnus</b><small>LOCKED</small></div><em>🔒</em></div>
+            <div class="space-route-node" data-stage="mars"><span>🔴</span><div><b>Mars</b><small>LOCKED</small></div><em>🔒</em></div>
+            <div class="space-route-node" data-stage="moon"><span>🌕</span><div><b>Moon</b><small>40K FUEL</small></div><em>🔒</em></div>
+            <div class="space-route-node active unlocked" data-stage="earth"><span>🌍</span><div><b>Earth</b><small>CURRENT</small></div><em>●</em></div>
+          </div>
+        </div>
+
+        <div class="space-fuel-stats">
+          <div><span>Jouw bijdrage</span><b id="spacePersonalFuel">0 ⛽</b></div>
+          <div><span>Volgende stop</span><b id="spaceNextStop">🌕 Moon</b></div>
+        </div>
+        <div id="spaceLaunchStatus" class="space-launch-status">🚀 De raket wacht op Fuel…</div>
+        <div id="spaceBackendStatus" class="space-backend-status">🌐 Supabase verbinden…</div>
+      </section>
+
+    <div id="spaceGameSection" class="space-live-game hidden">
+      <section class="card lab-hero">
+        <div class="lab-headline"><div class="eyebrow">DE VOLGENDE EXPEDITIE</div><span class="lab-preview-chip">🌐 LIVE GLOBAL</span></div>
+        <h2>🚀 Space Event</h2>
+        <p class="lab-hero-intro">Zeven bestemmingen. Eén wereldwijde missie. Van de Aarde tot de mysterieuze PSR J2322-2650b! 🥒</p>
+        <div class="lab-alert">🌐 <b>Echte communitymissie.</b> Alleen de huidige ontgrendelde planeet is speelbaar. Resultaten worden pas na servervalidatie bij de wereldscore opgeteld.</div>
+        <div class="lab-group-heading">🪐 Huidige bestemming</div>
+        <div id="labPhases" class="lab-phases" aria-label="Kies minigame"></div>
+        <div class="lab-mission">
+          <div class="lab-mission-heading"><div><div class="eyebrow">WERELDWIJDE MISSIE</div><h3 id="labTitle">🌍 Aarde</h3></div><div class="lab-mission-step" id="labPhaseNumber">FASE 1 / 7</div></div>
+          <p class="lab-mission-desc" id="labDescription">De Gaspomp: één Fuel per klik.</p>
+          <div class="lab-mission-tiles"><div class="lab-mission-tile"><small>🌐 WERELDDOEL</small><b id="labWorldTarget">40.000 Fuel</b></div><div class="lab-mission-tile lab-reward-tile"><small>🎁 BELONING</small><div class="lab-reward-meta"><img id="labRewardArt" class="hidden" src="assets/space/rewards/earth.png" alt="Eventbeloning"><b id="labRewardName">Raketkomkommer</b></div></div></div>
+        </div>
+        <div class="lab-score-section" aria-label="Missievoortgang"><div class="lab-stat"><small id="labScoreLabel">JOUW BIJDRAGE</small><b id="labScore">0</b></div><div id="labClockTile" class="lab-stat hidden"><small>TIJD OVER</small><b id="labClock">—</b></div><div id="labGearTile" class="lab-stat hidden"><small id="labGearLabel">UITRUSTING</small><b id="labAmmo">—</b></div></div>
+        <div class="lab-stage"><div class="lab-game-heading"><span id="labGameCaption">⛽ TANKSTATION</span><span class="lab-live-dot">● LIVE EVENT</span></div><canvas id="labCanvas" width="360" height="235" aria-label="Space minigame-speelveld"></canvas></div>
+        <div class="lab-actions"><button id="labStart" type="button">▶ Start missie</button><button id="labAction" type="button" disabled>✨ Actie</button><button id="labFinish" type="button" class="hidden">✓ Resultaat indienen</button><button id="labNext" type="button" class="hidden" disabled>Volgende planeet</button></div>
+        <div class="lab-dpad" aria-label="Besturing"><button data-lab-move="up" type="button" aria-label="Omhoog">↑</button><button data-lab-move="left" type="button" aria-label="Links">←</button><button data-lab-move="down" type="button" aria-label="Omlaag">↓</button><button data-lab-move="right" type="button" aria-label="Rechts">→</button></div>
+        <p class="lab-hint" id="labControlsHint">Gebruik het speelveld of de pijltjestoetsen.</p>
+        <div class="lab-notice" id="labNotice" role="status">Speel de missie voor echte wereldwijde punten.</div>
+        <p class="lab-footnote"><span id="labProgressNote">Alleen door de server bevestigde scores tellen mee.</span> <span id="labBossHP" class="hidden">100.000</span></p>
+      </section>
+    </div>
+
+
+      <section class="card space-pump-card">
+        <div class="space-pump-copy">
+          <div><div class="eyebrow">EVENT TOOL</div><h2>⛽ Space Gaspomp</h2></div>
+          <div class="space-one-click">1 CLICK = <b>1 FUEL</b></div>
+        </div>
+        <p class="space-pump-sub">Geen 🥒, geen CPS en geen click-power. Alleen jij + de community + de pomp.</p>
+
+        <button id="spaceFuelPump" class="space-fuel-pump" type="button" aria-label="Klik op de Space Gaspomp om één Fuel te verzamelen">
+          <span class="space-pump-antenna"><i></i></span>
+          <span class="space-pump-machine">
+            <span class="space-pump-screen"><span>⛽</span><b>FUEL</b><small id="spacePumpHint">READY • +1 PER CLICK</small></span>
+            <span class="space-pump-tank"><i></i></span>
+            <span class="space-pump-hose"></span>
+            <span class="space-pump-nozzle">⌁</span>
+            <span class="space-pump-lights"><i></i><i></i><i></i></span>
+          </span>
+          <span class="space-pump-button">PUMP FUEL!</span>
+        </button>
+        <div id="spaceFuelPopLayer" class="space-fuel-pop-layer" aria-hidden="true"></div>
+      </section>
+
+      <section class="card space-reward-card">
+        <div class="space-reward-icon"><img src="assets/space/rewards/psr.png" alt="Opperalienkomkommer, zonder animatie"></div>
+        <div><div class="eyebrow">FINAL GLOBAL REWARD</div><h2>Opperalienkomkommer</h2><p>De grote reward blijft achter de volledige reis verborgen: Earth → Moon → Mars → Saturnus → Pluto → Zon → PSR J2322-2650b.</p></div>
+      </section>
+
+      <section class="card space-leak-details"><h3>🌐 Eén community, zeven missies</h3><p>Iedere voltooide fase ontgrendelt de volgende planeet. Alleen bevestigde bijdragen tellen mee; jij behoudt je eigen komkommer-voortgang.</p></section>
+    </section>
+
+    <section id="panel-news" class="tab-panel" data-panel="news">
+      <section class="card kc-news-hero"><div class="eyebrow">KOMKOMMER NEWSROOM • 4.9.0</div>
+        <h2>📰 Het Komkommerjournaal</h2><p>Missies, releases en aankondigingen. Rechtstreeks uit het Komkommerrijk.</p></section>
+      <div id="newsFeed" class="kc-news-feed" aria-live="polite"></div>
+    </section>
+
+    <section id="panel-leaderboard" class="tab-panel" data-panel="leaderboard">
+      <div class="kc-board-tabs" role="tablist" aria-label="Soort leaderboard">
+        <button type="button" class="kc-board-tab active" data-board="global" role="tab" aria-selected="true">🌍 Global</button>
+        <button type="button" class="kc-board-tab" data-board="monthly" role="tab" aria-selected="false">📅 Monthly</button>
+        <button type="button" class="kc-board-tab" data-board="person" role="tab" aria-selected="false">🥒 Person</button>
+      </div>
+      <div class="kc-board-view active" data-board-panel="global">
+      <section class="card page-card leaderboard-page">
+        <div class="page-heading"><div><div class="eyebrow">KC RANGLIJSTEN</div><h2>🏆 Leaderboards</h2></div><button id="refreshLeaderboard" class="mini">↻ Vernieuwen</button></div>
+        <div id="leaderboardOffline" class="online-empty">Koppel eerst je online account bij <b>Account</b>.</div>
+        <div id="leaderboardOnline" class="hidden">
+          <div class="my-rank-card"><span>Jouw positie</span><b id="myRank">#—</b><small id="myRankStats">Nog niet gesynchroniseerd</small></div>
+          <div class="leaderboard-head"><span>#</span><span>Speler</span><span>Lifetime 🥒</span></div>
+          <div id="leaderboardList" class="leaderboard-list"></div>
+          <div id="leaderboardMsg" class="status"></div>
+        </div>
+      </section>
+
+      </div>
+      <div class="kc-board-view" data-board-panel="monthly">
+      <section class="card monthly-card">
+        <div class="page-heading"><div><div class="eyebrow">MONTHLY</div><h2>🏆 Monthly Leaderboards</h2></div><small id="monthlyKey">Deze maand</small></div>
+        <div id="monthlyStats" class="autumn-wallet"></div>
+        <div id="kcOctoberReward" class="kc-monthly-reward"><img src="assets/skins/chinchilla.png" alt="Chinchilla-kommer, exclusieve oktoberbeloning"><div><small>🏆 OKTOBER 2026 • EXCLUSIEF</small><strong>Chinchilla-kommer</strong><p>Top 3 van de maandelijkse leaderboards. Permanente skin, niet te koop.</p></div></div>
+        <div id="monthlyBoards" class="monthly-boards"><div class="monthly-empty">Online rankings laden zodra je cloud-account gekoppeld is.</div></div>
+      </section>
+      </div>
+      <div class="kc-board-view" data-board-panel="person">
+        <section class="card kc-person-board">
+          <div class="page-heading"><div><div class="eyebrow">PERSON • SKIN RECORDS</div><h2>🥒 Beste klikkers per skin</h2></div><small>Skins uit de KC-collectie</small></div>
+          <p class="kc-person-intro">Klik op een skin en bekijk de top 100 spelers met de meeste klikken op die skin. Nieuwe klikken vanaf 4.9.3 tellen mee na cloudsynchronisatie.</p>
+          <input id="kcPersonSearch" class="kc-person-search" type="search" placeholder="Zoek skins (bijvoorbeeld Marokkomkommer)" aria-label="Zoek skins">
+          <div id="kcPersonSkinGrid" class="kc-person-skin-grid"></div>
+          <div class="kc-person-detail" id="kcPersonDetail">
+            <div class="kc-person-selected"><div id="kcPersonSelectedArt"></div><div><div class="eyebrow">PERSON LEADERBOARD</div><h2 id="kcPersonSelectedName">Normaal</h2><small>Meeste klikken met deze skin</small></div></div>
+            <div class="kc-person-result" id="kcPersonResult">De per-skin wereldranglijst is nog niet actief. Deze preview toont bewust geen verzonnen spelers of scores.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="panel-crossing" class="tab-panel" data-panel="crossing">
+      <div class="card kc-crossing-head">
+        <div class="eyebrow">KC 4.9.3 • KOMKOMMER CROSSING COLLAB</div>
+        <h2>🏁 De grote oversteek</h2>
+        <p>Ontwijk snelle auto's en treinen. Spring via boomstammen over het water. Iedere nieuwe rij = 1 punt.</p>
+        <p><strong>Geen box opening. Geen komkommervaluta.</strong> Alleen een scoreklassement en permanente prijzen.</p>
+        <div class="kc-crossing-prizes"><span>🥇–🥉 Go-kartkomkommer + <b>Road Crosser 🏁🥒</b></span><span>🏅 #4–5 <b>Road Crosser 🏁🥒</b></span></div>
+      </div>
+      <div class="kc-crossing-layout">
+        <div class="kc-crossing-viewport"><iframe id="kcCrossingFrame" title="Komkommer Crossing speelveld" src="about:blank" data-src="crossing/index.html" loading="lazy"></iframe></div>
+        <div class="card kc-crossing-leaderboard">
+          <div class="eyebrow">14 – 21 NOVEMBER 2026</div>
+          <h2>🏆 Crossing Top 100</h2>
+          <p>Beste afstand per KC-account. De testscore staat los van het echte event.</p>
+          <div class="kc-crossing-switch" role="group" aria-label="Scorebord modus"><button id="kcCrossingTestBoard" class="active" type="button">Testscores</button><button id="kcCrossingLiveBoard" type="button">Event 14–21 nov.</button></div>
+          <div id="kcCrossingBoard" class="kc-crossing-results">Klik op Vernieuwen om scores op te halen.</div>
+          <button id="kcCrossingRefresh" type="button" class="kc-crossing-refresh">↻ Vernieuwen</button>
+          <p class="kc-crossing-small">Je moet met je KC-account verbonden zijn om een online score op te slaan. Eventprijzen worden pas na de definitieve uitslag uitgedeeld.</p>
+        </div>
+      </div>
+    </section>
+    <section id="panel-codes" class="tab-panel" data-panel="codes">
+      <section class="card secrets-card page-card">
+        <div class="section-title"><div><div class="eyebrow">GEHEIMEN</div><h2>🔐 Codes</h2></div><small id="secretCount">Ontdekt: 0 / 5</small></div>
+        <div class="code-row">
+          <input id="code" maxlength="60" autocomplete="off" placeholder="Voer geheime code in…">
+          <button id="redeem">Probeer</button>
+        </div>
+        <div id="codeMsg" class="status"></div>
+        <div id="secretList" class="secret-list"></div>
+      </section>
+    </section>
+
+    <section id="panel-account" class="tab-panel" data-panel="account">
+      <section class="account-card account-page-card">
+        <div class="account-info"><span>👤 Komkommer-account</span><b id="accountName">Geen account</b><small id="accountId">Maak eerst je profiel</small></div>
+      </section>
+
+      <section class="card kc-profile-summary">
+        <div class="page-heading"><div><div class="eyebrow">SPELERSPASPOORT</div><h2>🥒 Mijn profiel</h2></div><button id="myProfileOpen" class="mini" type="button">Bekijk profiel ↗</button></div>
+        <div class="kc-me-line"><span id="myProfileAvatar" class="kc-avatar">🥒</span><div><b id="myProfileName">Komkommeraar</b><small id="myProfileTitle">Komkommeraar</small></div></div>
+        <div id="myProfileOverview" class="kc-me-stats"></div>
+        <label class="kc-profile-choice">Titel <select id="profileTitleSelect"><option value="Komkommeraar">Komkommeraar</option></select></label>
+        <label class="kc-profile-choice">Effect <select id="profileEffectSelect"><option value="none">Geen effect</option></select></label>
+        <button id="saveProfileLook" class="online-primary" type="button">Bewaar profieluiterlijk</button>
+      </section>
+      <section class="card online-card">
+        <div class="page-heading"><div><div class="eyebrow">GLOBAL</div><h2>☁️ Cloud-account</h2></div><span id="cloudPill" class="cloud-pill">Niet gekoppeld</span></div>
+        <div id="cloudNotConfigured">
+          <p class="online-help">Verbinding met de KC-gameserver. De openbare sleutel staat normaal al ingesteld.</p>
+          <input id="supabaseUrl" class="online-input" autocomplete="off" placeholder="https://jouwproject.supabase.co">
+          <input id="supabaseKey" class="online-input" autocomplete="off" placeholder="Supabase anon/publishable key">
+          <button id="saveOnlineConfig" class="online-primary">Server koppelen 🌍</button>
+          <div id="onlineConfigMsg" class="status"></div>
+        </div>
+        <div id="cloudConfigured" class="hidden">
+          <div id="cloudUnlinked">
+            <p class="online-help">Heb je al een cloud-account? Koppel eerst je bestaande sync-code. Maak alleen een nieuw cloud-account als dit echt je eerste account is.</p>
+            <button id="createCloudAccount" class="online-primary">Nieuw cloud-account maken</button>
+            <div class="divider"><span>of</span></div>
+            <input id="existingSyncCode" class="online-input" autocomplete="off" placeholder="KC4-XXXX-XXXX-XXXX-XXXX">
+            <button id="linkCloudAccount">Bestaand account koppelen</button>
+          </div>
+          <div id="cloudLinked" class="hidden">
+            <div class="cloud-grid">
+              <div><span>Laatste sync</span><b id="lastSyncText">Nog niet</b></div>
+              <div><span>Serverversie</span><b id="serverRevisionText">0</b></div>
+            </div>
+            <div id="cloudConflict" class="cloud-conflict hidden">⚠️ Er is progressie op twee apparaten veranderd. Kies welke save moet winnen.</div>
+            <div class="account-actions account-actions-wide cloud-actions">
+              <button id="syncNow">☁️ Nu syncen</button>
+              <button id="loadCloud">⬇ Cloud laden</button>
+              <button id="forceCloud">⬆ Dit apparaat uploaden</button>
+              <button id="copySyncCode">🔑 Sync-code kopiëren</button>
+              <button id="copyAccountId">📋 Account-ID kopiëren</button>
+            </div>
+            <button id="unlinkCloud" class="unlink-btn">Cloud-account loskoppelen</button>
+          </div>
+          <div id="onlineAccountMsg" class="status"></div>
+        </div>
+      </section>
+
+
+
+      <section class="card kc-security-card" id="kcSecurityCard">
+        <div class="page-heading"><div><div class="eyebrow">4.9.3 • SECURITY UPDATE</div><h2>🔐 E-mailbeveiliging</h2></div><small>Powered by GYE Studios 🥒</small></div>
+        <p class="online-help">Koppel een e-mailadres aan je cloud-account of herstel je verloren sync-code. De verificatiecode verloopt na 10 minuten.</p>
+        <div class="kc-security-fields">
+          <label for="kcSecurityEmail">E-mailadres</label>
+          <input id="kcSecurityEmail" class="online-input" type="email" autocomplete="email" placeholder="jij@example.com" maxlength="254">
+          <div class="kc-security-actions">
+            <button id="kcSecurityStatus">🔎 Status controleren</button>
+            <button id="kcSecurityVerifyStart" class="online-primary">📧 E-mail koppelen</button>
+            <button id="kcSecurityRecoverStart">🛟 Account herstellen</button>
+          </div>
+          <div id="kcSecurityChallenge" class="kc-security-challenge hidden">
+            <label for="kcSecurityCode">Zescijferige e-mailcode</label>
+            <input id="kcSecurityCode" class="online-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="••••••">
+            <button id="kcSecurityConfirm" class="online-primary">✅ Code controleren</button>
+          </div>
+          <div id="kcSecurityResult" class="status" role="status" aria-live="polite"></div>
+          <div id="kcSecurityRecovered" class="kc-security-recovered hidden">
+            <b>Nieuwe sync-code — bewaar hem veilig!</b>
+            <input id="kcSecurityNewKey" class="online-input" type="password" readonly autocomplete="off">
+            <div class="kc-security-actions"><button id="kcSecurityReveal">👁️ Tonen/verbergen</button><button id="kcSecurityCopy">📋 Kopiëren</button><button id="kcSecurityUse">☁️ Account herstellen op dit apparaat</button></div>
+            <small>Je oude sync-code is nu ongeldig. Je cloudsave wordt pas op dit apparaat geladen als je zelf op herstellen klikt.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="card account-tools-card">
+        <div class="page-heading"><div><div class="eyebrow">ACCOUNT</div><h2>✏️ Naam veranderen</h2></div><small>1.000.000.000 🥒</small></div>
+        <div class="admin-inline"><input id="newDisplayName" maxlength="20" placeholder="Nieuwe naam…"><button id="changeDisplayName">Verander naam</button></div>
+        <div id="nameChangeMsg" class="status"></div>
+      </section>
+
+      <section class="card account-tools-card">
+        <div class="page-heading"><div><div class="eyebrow">INSTELLINGEN</div><h2>⚙️ Game</h2></div></div>
+        <div class="settings-grid">
+          <button id="soundToggle" class="mini setting-btn">🔊 ASMR: AAN</button>
+          <button id="particlesToggle" class="mini setting-btn">✨ Effecten: AAN</button>
+        </div>
+      </section>
+
+      <section class="card future-card">
+        <div class="eyebrow">GLOBAL UPDATE</div>
+        <h2>🚀 4.9.0 — SPACE EVENT</h2>
+        <p>Zeven wereldwijde missies, echte Space-minigames, Nieuws, spelerprofielen en nieuwe cosmetische beloningen.</p>
+      </section>
+
+      <section class="card danger-card">
+        <h2>🧨 Carrière resetten</h2>
+        <p>Je Komkommer-account blijft bestaan, maar je lokale progressie begint opnieuw.</p>
+        <button id="reset" class="danger-btn">♻️ Progressie resetten</button>
+      </section>
+    </section>
+
+
+    <section id="panel-admin" class="tab-panel" data-panel="admin">
+      <section class="card page-card admin-page">
+        <div class="page-heading"><div><div class="eyebrow">SERVERBEHEER</div><h2>👑 Adminpaneel</h2></div><span id="adminRolePill" class="admin-role-pill">ADMIN</span></div>
+        <div id="adminPatchWarning" class="cloud-conflict hidden">⚠️ De Supabase 4.1.0 admin-migratie lijkt nog niet actief. Voer <code>supabase_4.4.0_patch.sql</code> uit.</div>
+        <p class="online-help">Zoek op spelersnaam of account-ID. Adminacties worden server-side gecontroleerd en gelogd.</p>
+        <div class="admin-search-row"><input id="adminSearchInput" class="online-input" autocomplete="off" placeholder="Spelersnaam of account-ID…"><button id="adminSearchBtn">Zoeken</button></div>
+        <div id="adminMsg" class="status"></div>
+        <div id="adminSearchResults" class="admin-search-results"></div>
+      </section>
+
+      <section id="adminTargetCard" class="card admin-target-card hidden">
+        <div class="page-heading"><div><div class="eyebrow">GESELECTEERD ACCOUNT</div><h2 id="adminTargetName">—</h2></div><span id="adminTargetBan" class="admin-ban-state">Niet geband</span></div>
+        <code id="adminTargetId" class="admin-target-id">—</code>
+        <div id="adminTargetStats" class="admin-target-stats">—</div>
+
+        <div class="admin-section">
+          <b>🥒 Stats corrigeren</b>
+          <div class="admin-grid-3">
+            <label>Komkommers<input id="adminCucumbers" type="number" min="0"></label>
+            <label>Lifetime<input id="adminLifetime" type="number" min="0"></label>
+            <label>Clicks<input id="adminClicks" type="number" min="0"></label>
+          </div>
+          <button id="adminSetStats" class="online-primary">Waarden opslaan</button>
+          <div class="admin-grid-3 admin-extra-stats">
+            <label>Bonus per klik<input id="adminPerClick" type="number" min="0"></label>
+            <label>Bonus per sec<input id="adminPerSec" type="number" min="0"></label>
+            <button id="adminSetPower" class="online-primary">Power opslaan</button>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <b>🚫 Banbeheer</b>
+          <input id="adminBanReason" class="online-input" maxlength="160" placeholder="Reden (optioneel)…">
+          <div class="admin-ban-buttons">
+            <button id="adminBan1h">1 uur</button><button id="adminBan1d">1 dag</button><button id="adminBanForever" class="danger-btn">Permanent</button><button id="adminUnban">Unban</button>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <b>⬆️ Upgrade corrigeren</b>
+          <div class="admin-inline"><select id="adminUpgradeSelect"></select><input id="adminUpgradeLevel" type="number" min="0" max="100" value="0"><button id="adminSetUpgrade">Zet level</button></div>
+        </div>
+
+        <div class="admin-section">
+          <b>🎨 Skinbeheer</b>
+          <div class="admin-inline"><select id="adminSkinSelect"></select><button id="adminGiveSkin">Geef</button><button id="adminRemoveSkin">Verwijder</button></div>
+        </div>
+        <div class="admin-section kc-admin-cosmetic">
+          <b>🏷️ Titelbeheer</b>
+          <p class="online-help">Geef of verwijder een profiel-titel. De standaardtitel Komkommeraar blijft altijd behouden.</p>
+          <div class="admin-inline"><select id="adminTitleSelect" aria-label="Titel kiezen"></select><button id="adminGiveTitle" type="button">Geef</button><button id="adminRemoveTitle" type="button">Verwijder</button></div>
+        </div>
+        <div class="admin-section kc-admin-cosmetic">
+          <b>✨ Effectbeheer</b>
+          <p class="online-help">Geef of verwijder een cosmetisch effect. Dit verandert de spelstatistieken niet.</p>
+          <div class="admin-inline"><select id="adminEffectSelect" aria-label="Effect kiezen"></select><button id="adminGiveEffect" type="button">Geef</button><button id="adminRemoveEffect" type="button">Verwijder</button></div>
+        </div>
+
+        <div id="ownerRoleSection" class="admin-section hidden">
+          <b>👑 Owner: rolbeheer</b>
+          <div class="admin-inline"><select id="ownerRoleSelect"><option value="player">Player</option><option value="admin">Admin</option></select><button id="ownerSetRole">Zet rol</button></div>
+        </div>
+      </section>
+
+      <section class="card kc-news-admin">
+        <div class="page-heading"><div><div class="eyebrow">KOMKOMMER NEWSROOM</div><h2>📰 Nieuws publiceren</h2></div></div>
+        <p class="online-help">Plaats een bericht in het Nieuws-tabblad van alle KC-spelers. Alleen admins en owners kunnen dit.</p>
+        <label class="kc-profile-choice">Categorie <select id="adminNewsCategory"><option>🚀 EVENT</option><option>🥒 UPDATE</option><option>🏆 LEADERBOARD</option><option>📣 NIEUWS</option><option>🛠️ ONDERHOUD</option></select></label>
+        <input id="adminNewsTitle" class="online-input" maxlength="90" placeholder="Kop van het nieuwsbericht (6–90 tekens)">
+        <textarea id="adminNewsBody" class="online-input" maxlength="1200" rows="4" placeholder="Wat moeten KC-spelers weten? (12–1200 tekens)"></textarea>
+        <button id="adminNewsPublish" class="online-primary" type="button">📰 Publiceren voor iedereen</button>
+        <div id="adminNewsStatus" class="status" role="status"></div>
+      </section>
+
+      <section class="card admin-log-card">
+        <div class="page-heading"><div><div class="eyebrow">AUDIT</div><h2>📜 Adminlogboek</h2></div><button id="refreshAdminLogs" class="mini">↻ Vernieuwen</button></div>
+        <div id="adminLogs" class="admin-logs"><div class="online-empty">Nog niet geladen.</div></div>
+      </section>
+    </section>
+
+  </main>
+
+  <div id="splatterLayer" class="splatter-layer" aria-hidden="true"></div>
+  <div id="trumpHeadOverlay" class="trump-head-overlay" aria-hidden="true"><img src="assets/secret/trump-head.png" alt=""></div>
+  <div id="secretModal" class="secret-modal hidden" role="dialog" aria-modal="true">
+    <div class="secret-modal-box">
+      <button id="closeSecretModal" class="secret-close" aria-label="Sluiten">×</button>
+      <div id="secretModalContent"></div>
+    </div>
+  </div>
+
+  <div id="autumnIntro" class="autumn-intro hidden" role="dialog" aria-modal="true" aria-label="Autumn Event intro">
+    <video id="autumnIntroVideo" preload="auto" playsinline muted poster="assets/autumn/vert-tumnus-poster.jpg">
+      <source src="assets/autumn/vert-tumnus-animation.webm" type="video/webm">
+      <source src="assets/autumn/vert-tumnus-animation.mp4" type="video/mp4">
+    </video>
+    <button id="skipAutumnIntro" type="button">Skip ⏭</button>
+  </div>
+  <div id="kcPlayerModal" class="kc-player-modal hidden" role="dialog" aria-modal="true" aria-labelledby="kcPlayerModalTitle">
+    <div class="kc-player-modal-card">
+      <button id="kcPlayerModalClose" class="kc-player-close" type="button" aria-label="Sluiten">×</button>
+      <div id="kcPlayerModalContent"><h2 id="kcPlayerModalTitle">Spelerprofiel</h2></div>
+    </div>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <footer>4.9.3 SECURITY UPDATE • GYE Studios 🥒</footer>
+</div>
+
+<div id="profileGate" class="profile-gate hidden">
+  <div class="profile-box login-first-box">
+    <div class="profile-icon">🥒</div>
+    <div class="eyebrow">THE GLOBAL UPDATE</div>
+    <h2>Welkom terug</h2>
+    <p>Heb je al een Komkommer-account? Log meteen in met je sync-code. Je naam, save en leaderboard-account worden uit de cloud hersteld.</p>
+
+    <div id="gateServerSetup" class="gate-server hidden">
+      <b>🌍 Gameserver</b>
+      <p>De officiële gameserver is automatisch gekoppeld. Je hoeft hier normaal niets in te vullen.</p>
+      <input id="gateSupabaseUrl" autocomplete="off" placeholder="https://jouwproject.supabase.co">
+      <input id="gateSupabaseKey" autocomplete="off" placeholder="Supabase anon/publishable key">
+      <button id="gateSaveOnlineConfig" class="gate-primary">Server onthouden 🌍</button>
+      <div id="gateConfigMsg" class="profile-error"></div>
+      <div class="divider"><span>daarna</span></div>
+    </div>
+
+    <div id="gateLoginSection">
+      <input id="gateSyncCode" autocomplete="off" placeholder="KC4-XXXX-XXXX-XXXX-XXXX">
+      <button id="gateLoginAccount" class="gate-primary">Inloggen & herstellen ☁️</button>
+    </div>
+
+    <div class="divider"><span>of</span></div>
+    <button id="gateRecoveryToggle" class="gate-secondary" type="button">📧 Sync-code kwijt? Herstel via e-mail</button>
+    <div id="gateRecoveryPanel" class="gate-new-profile hidden kc-security-challenge">
+      <p>Gebruik het e-mailadres dat eerder aan je account is geverifieerd.</p>
+      <input id="gateRecoveryEmail" type="email" maxlength="254" autocomplete="email" placeholder="jij@example.com">
+      <button id="gateRecoveryRequest" class="gate-primary" type="button">Verstuur herstelcode</button>
+      <input id="gateRecoveryCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6-cijferige code">
+      <button id="gateRecoveryConfirm" class="gate-primary" type="button">Controleer herstelcode</button>
+      <div id="gateRecoveryNewBox" class="hidden">
+        <p>Nieuwe sync-code: bewaar hem veilig!</p>
+        <input id="gateRecoveryNewKey" readonly type="text" autocomplete="off">
+        <button id="gateRecoveryCopy" class="gate-secondary" type="button">📋 Kopieer sync-code</button>
+        <button id="gateRecoveryLink" class="gate-primary" type="button">☁️ Herstel mijn account</button>
+      </div>
+      <div id="gateRecoveryStatus" class="profile-error" role="status" aria-live="polite"></div>
+    </div>
+    <div class="divider"><span>of</span></div>
+    <button id="showNewProfile" class="gate-secondary">Ik ben nieuw</button>
+    <div id="gateNewProfile" class="hidden gate-new-profile">
+      <p><b>Alleen gebruiken als je nog géén sync-code/account hebt.</b> Hiermee wordt een nieuw leaderboard-account gemaakt.</p>
+      <input id="profileName" maxlength="20" autocomplete="off" placeholder="Nieuwe spelersnaam…">
+      <button id="createProfile" class="gate-primary">Nieuw account maken 🥒</button>
+    </div>
+    <div id="profileError" class="profile-error"></div>
+    <small>In versie 4.9.3 is e-mailverificatie verplicht. Je sync-code blijft je herstelcode.</small>
+  </div>
+</div>
+
+
+
+<div id="kcEmailGate" class="profile-gate kc-email-gate hidden" role="dialog" aria-modal="true" aria-labelledby="kcEmailGateTitle" aria-hidden="true">
+  <div class="profile-box kc-email-gate-box">
+    <div class="kc-email-gate-top"><div class="profile-icon">🔐🥒</div><div class="eyebrow">GYE STUDIOS • KC 4.9.3</div></div>
+    <h2 id="kcEmailGateTitle">Beveilig je KC-account</h2>
+    <p>Voordat je kunt spelen, moet je een <strong>e-mailadres koppelen en verifiëren.</strong> Je bestaande voortgang blijft bewaard.</p>
+    <div id="kcGateLinkSetup" class="kc-gate-step hidden">
+      <div class="kc-gate-step-title">☁️ Eerst je cloudaccount koppelen</div>
+      <p id="kcGateServerInfo">Vul je bestaande KC-sync-code in.</p>
+      <label for="kcGateSyncKey">Bestaande sync-code</label>
+      <input id="kcGateSyncKey" autocomplete="off" type="password" placeholder="KC4-XXXX-XXXX-XXXX-XXXX">
+      <button id="kcGateLinkAccount" class="gate-primary" type="button">☁️ Bestaand account koppelen</button>
+      <button id="kcGateCreateCloud" class="gate-secondary" type="button">Ik heb nog geen cloudaccount</button>
+    </div>
+    <div id="kcGateVerifySection" class="kc-gate-step hidden">
+      <div class="kc-gate-step-title">📧 E-mailadres verifiëren</div>
+      <label for="kcGateEmail">Jouw e-mailadres</label>
+      <input id="kcGateEmail" type="email" maxlength="254" autocomplete="email" placeholder="jij@voorbeeld.nl">
+      <button id="kcGateSendEmail" class="gate-primary" type="button">🥒 Verstuur verificatiecode</button>
+      <div id="kcGateCodeRow" class="hidden">
+        <label for="kcGateCode">6-cijferige code (10 minuten geldig)</label>
+        <input id="kcGateCode" inputmode="numeric" type="text" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+        <button id="kcGateConfirmEmail" class="gate-primary" type="button">✅ Controleer code en ontgrendel KC</button>
+      </div>
+      <button id="kcGateCheckStatus" class="gate-secondary" type="button">🔎 Mijn e-mail is al geverifieerd</button>
+    </div>
+    <button id="kcGateRecoveryToggle" class="gate-secondary kc-gate-recover-toggle" type="button">🛟 Sync-code kwijt? Herstel je account</button>
+    <div id="kcGateRecoveryPanel" class="kc-gate-step hidden">
+      <p>Herstel alleen een account waarvan je het e-mailadres eerder hebt geverifieerd.</p>
+      <label for="kcGateRecoverEmail">Gekoppeld e-mailadres</label>
+      <input id="kcGateRecoverEmail" type="email" maxlength="254" autocomplete="email" placeholder="jij@voorbeeld.nl">
+      <button id="kcGateRecoverSend" class="gate-primary" type="button">Verstuur herstelcode</button>
+      <div id="kcGateRecoverCodeRow" class="hidden">
+        <label for="kcGateRecoverCode">Herstelcode</label>
+        <input id="kcGateRecoverCode" type="text" maxlength="6" inputmode="numeric" autocomplete="one-time-code" placeholder="••••••">
+        <button id="kcGateRecoverConfirm" class="gate-primary" type="button">Herstelaccount bevestigen</button>
+      </div>
+    </div>
+    <div id="kcGateNewKeyBox" class="kc-gate-step hidden">
+      <label for="kcGateNewKey">Je nieuwe sync-code — bewaar hem veilig</label>
+      <input id="kcGateNewKey" readonly autocomplete="off" type="text">
+      <button id="kcGateCopyKey" class="gate-secondary" type="button">📋 Sync-code kopiëren</button>
+      <button id="kcGateUseKey" class="gate-primary" type="button">☁️ Herstelde account gebruiken</button>
+    </div>
+    <div id="kcGateStatus" class="kc-gate-message" role="status" aria-live="polite">🔎 Je beveiligingsstatus wordt gecontroleerd…</div>
+    <small>De verificatie is verplicht, maar je lokale save wordt niet verwijderd. Geen overslaanknop.</small>
+  </div>
+</div>
+
+<div id="banGate" class="profile-gate ban-gate hidden">
+  <div class="profile-box ban-box">
+    <div class="profile-icon">🚫🥒</div>
+    <div class="eyebrow">ACCOUNT GEBLOKKEERD</div>
+    <h2>Je Komkommer-account is geband</h2>
+    <p><b>Duur:</b> <span id="banUntil">—</span></p>
+    <p><b>Reden:</b> <span id="banReason">Geen reden opgegeven.</span></p>
+    <small>De banstatus komt rechtstreeks van de gameserver.</small>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script src="space_lab.js"></script>
+<script src="desktop_ui.js"></script>
+<script src="crossing_ui.js"></script>
+</body>
+</html>
